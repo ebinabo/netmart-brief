@@ -1,65 +1,91 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from "next/head"
+import { Question } from "../components"
+import { questions } from "../questions"
 
 export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    const submitForm = e => {
+        e.preventDefault()
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        const formData = new FormData(e.target)
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+        const data = Object.fromEntries(formData)
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+        console.log(data)
+    }
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+    return (
+        <>
+            <Head>
+                <title>Netmart Website Brief</title>
+            </Head>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+            <main className="container max-w-3xl mx-auto px-4 mt-2 text-justify">
+                <div className="mt-4">
+                    <h1 className="text-4xl text-gray-900 font-semibold">
+                        Overview
+                    </h1>
+                    <p className="text-gray-700">
+                        As described in the Business Model for Netmart sent
+                        earlier, Netmart is a platform where multi-level
+                        marketers or network marketing companies can present
+                        their products or services globally and reach millions
+                        of like-minded individuals in the multi-level marketing
+                        industry.
+                    </p>
+                </div>
 
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+                <div className="mt-4">
+                    <h2 className="text-2xl text-gray-900 font-semibold">
+                        Goals
+                    </h2>
+                    <p className="text-gray-700">
+                        Netmart is a multisided platform focusing mainly on MLM.
+                        Netmart aims to reduce search and transaction costs and
+                        to build an audience of like-minded individuals in the
+                        industry.
+                    </p>
+                </div>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+                <div className="mt-8">
+                    <h1 className="text-4xl text-gray-900 font-semibold">
+                        Brief
+                    </h1>
+                    <p className="text-gray-700">
+                        The aim of this document is to further understand the
+                        needs and requirements of the platform so as to serve
+                        you better and create a tailored platform to serve the
+                        users of the platform excellently. The following
+                        questions would help our team have a clearer
+                        understanding of everything that is required.
+                    </p>
+                </div>
+
+                <form className="mb-8 mt-2" onSubmit={submitForm}>
+                    {Object.keys(questions).map(category => (
+                        <div className="mt-4" key={category}>
+                            <h2 className="text-2xl text-gray-900 font-semibold mb-2">
+                                {category}
+                            </h2>
+                            <div className="grid gap-4">
+                                {questions[category].map((question, index) => (
+                                    <Question
+                                        id={index + 1}
+                                        key={index}
+                                        category={category}
+                                        {...question}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+
+                    <button
+                        className="bg-blue-700 text-blue-50 mt-4 px-3 py-1 focus:outline-none rounded-md"
+                        type="submit">
+                        Submit
+                    </button>
+                </form>
+            </main>
+        </>
+    )
 }
