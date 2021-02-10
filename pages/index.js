@@ -1,8 +1,12 @@
 import Head from "next/head"
+import { useState } from "react"
 import { Question } from "../components"
+import { firestore } from "../firebase"
 import { questions } from "../questions"
 
 export default function Home() {
+    const [feedback, setFeedback] = useState("")
+
     const submitForm = e => {
         e.preventDefault()
 
@@ -10,7 +14,16 @@ export default function Home() {
 
         const data = Object.fromEntries(formData)
 
-        console.log(data)
+        firestore
+            .collection("questionnaire")
+            .add(data)
+            .then(() => {
+                setFeedback("Your response has been submitted, thank you")
+                e.target.reset()
+            })
+            .catch(() => {
+                setFeedback("An error occured, please try again")
+            })
     }
 
     return (
@@ -79,6 +92,7 @@ export default function Home() {
                         </div>
                     ))}
 
+                    <p>{feedback}</p>
                     <button
                         className="bg-blue-700 text-blue-50 mt-4 px-3 py-1 focus:outline-none rounded-md"
                         type="submit">
