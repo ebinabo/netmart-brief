@@ -1,12 +1,7 @@
-import ContextProvider from "../context"
 import "../styles/index.css"
 
 function MyApp({ Component, pageProps }) {
-    return (
-        <ContextProvider>
-            <Component {...pageProps} />
-        </ContextProvider>
-    )
+    return <Component {...pageProps} />
 }
 
 export default MyApp

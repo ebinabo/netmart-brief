@@ -1,31 +1,22 @@
 import Head from "next/head"
-import { useState } from "react"
 import { Question } from "../components"
-import { firestore } from "../firebase"
 import { questions } from "../questions"
+import { firestore } from "../firebase"
+import { slugify } from "../utils"
 
-export default function Home() {
-    const [feedback, setFeedback] = useState("")
+export async function getStaticProps() {
+    const response = await firestore
+        .doc("questionnaire/z7i70X3SNYrVLzpEIRsa")
+        .get()
 
-    const submitForm = e => {
-        e.preventDefault()
+    const data = response.data()
 
-        const formData = new FormData(e.target)
-
-        const data = Object.fromEntries(formData)
-
-        firestore
-            .collection("questionnaire")
-            .add(data)
-            .then(() => {
-                setFeedback("Your response has been submitted, thank you")
-                e.target.reset()
-            })
-            .catch(() => {
-                setFeedback("An error occured, please try again")
-            })
+    return {
+        props: { data },
     }
+}
 
+export default function Home({ data }) {
     return (
         <>
             <Head>
@@ -73,8 +64,8 @@ export default function Home() {
                     </p>
                 </div>
 
-                <form className="mb-8 mt-2" onSubmit={submitForm}>
-                    {Object.keys(questions).map(category => (
+                {data &&
+                    Object.keys(questions).map(category => (
                         <div className="mt-4" key={category}>
                             <h2 className="text-2xl text-gray-900 font-semibold mb-2">
                                 {category}
@@ -85,35 +76,19 @@ export default function Home() {
                                         id={index + 1}
                                         key={index}
                                         category={category}
+                                        response={
+                                            data[
+                                                slugify(
+                                                    `${category}-${index + 1}`
+                                                )
+                                            ]
+                                        }
                                         {...question}
                                     />
                                 ))}
                             </div>
                         </div>
                     ))}
-
-                    <div className="mt-4">
-                        <h2 className="text-2xl text-gray-900 font-semibold mb-2">
-                            Further Information
-                        </h2>
-                        <p className="text-sm tracking-wide text-gray-500 max-w-3xl">
-                            Please mention any other important information about
-                            the project that was not mentioned above.
-                        </p>
-                        <textarea
-                            className="w-full max-w-3xl h-20 border rounded-sm"
-                            name="further-info"
-                            type="text"
-                        />
-                    </div>
-
-                    <p className="py-2">{feedback}</p>
-                    <button
-                        className="bg-blue-700 text-blue-50 mt-4 px-3 py-1 focus:outline-none rounded-md"
-                        type="submit">
-                        Submit
-                    </button>
-                </form>
             </main>
         </>
     )

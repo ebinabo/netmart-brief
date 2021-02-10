@@ -11,11 +11,7 @@ export function Question({ id, question, description, ...rest }) {
             <p className="text-sm tracking-wide text-gray-500 max-w-3xl">
                 {description}
             </p>
-            <textarea
-                name={slug}
-                id={slug}
-                className="w-full max-w-3xl h-16 border rounded-sm"
-            />
+            <p>{rest.response}</p>
         </div>
     )
 }
