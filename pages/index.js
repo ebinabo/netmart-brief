@@ -92,7 +92,22 @@ export default function Home() {
                         </div>
                     ))}
 
-                    <p>{feedback}</p>
+                    <div className="mt-4">
+                        <h2 className="text-2xl text-gray-900 font-semibold mb-2">
+                            Further Information
+                        </h2>
+                        <p className="text-sm tracking-wide text-gray-500 max-w-3xl">
+                            Please mention any other important information about
+                            the project that was not mentioned above.
+                        </p>
+                        <textarea
+                            className="w-full max-w-3xl h-20 border rounded-sm"
+                            name="further-info"
+                            type="text"
+                        />
+                    </div>
+
+                    <p className="py-2">{feedback}</p>
                     <button
                         className="bg-blue-700 text-blue-50 mt-4 px-3 py-1 focus:outline-none rounded-md"
                         type="submit">

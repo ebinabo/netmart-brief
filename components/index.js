@@ -14,7 +14,7 @@ export function Question({ id, question, description, ...rest }) {
             <textarea
                 name={slug}
                 id={slug}
-                className="w-full max-w-3xl h-12 border rounded-sm"
+                className="w-full max-w-3xl h-16 border rounded-sm"
             />
         </div>
     )
